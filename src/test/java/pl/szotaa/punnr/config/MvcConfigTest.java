@@ -22,7 +22,7 @@ public class MvcConfigTest {
     private MockMvc mockMvc;
 
     private final static String BOOTSTRAP_PATH = "/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js";
-    private final static String JQUERY_PATH = "/webjars/jquery/3.3.1/dist/jquery.min.js";
+    private final static String JQUERY_PATH = "/webjars/jquery/3.3.1-1/jquery.min.js";
     private final static String POPPERJS_PATH = "/webjars/popper.js/1.14.1/dist/umd/popper.min.js";
 
     @Test
