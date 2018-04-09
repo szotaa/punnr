@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,6 +33,9 @@ public class MvcConfigTest {
     private final static String BOOTSTRAP_URL = "/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js";
     private final static String JQUERY_URL = "/webjars/jquery/3.3.1-1/jquery.min.js";
     private final static String POPPERJS_URL = "/webjars/popper.js/1.14.1/dist/umd/popper.min.js";
+    private final static String SOCKJS_URL = "/webjars/sockjs-client/1.1.2/sockjs.min.js";
+    private final static String STOMPWEBSOCKET_URL = "/webjars/stomp-websocket/2.3.3-1/stomp.min.js";
+    private final static String GAMECLIENT_URL = "/static/js/gameClient.js";
 
     @Test
     public void requestHomepage_homepageGetsServed() throws Exception {
@@ -64,6 +68,28 @@ public class MvcConfigTest {
     @Test
     public void requestPopperJs_resourceGetsServed() throws Exception {
         mockMvc.perform(get(POPPERJS_URL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/javascript"));
+    }
+
+    @Test
+    public void requestSockJs_resourceGetsServed() throws Exception {
+        mockMvc.perform(get(SOCKJS_URL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/javascript"));
+    }
+
+    @Test
+    public void requestStompWebSocket_resourceGetsServed() throws Exception {
+        mockMvc.perform(get(STOMPWEBSOCKET_URL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/javascript"));
+    }
+
+    @Test
+    @WithMockUser
+    public void requestGameClient_resourceGetsServed() throws Exception {
+        mockMvc.perform(get(GAMECLIENT_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/javascript"));
     }

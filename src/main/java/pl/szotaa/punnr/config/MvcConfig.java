@@ -26,5 +26,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry
                 .addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        registry
+                .addResourceHandler("/static/js/**").addResourceLocations("classpath:/static/js/");
     }
 }

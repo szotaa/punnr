@@ -8,7 +8,13 @@
 </head>
 <body>
 <main layout:fragment="content">
-    <p th:text="${'game room ' + gameId}"></p>
+    <p id="gameId" style="display: none;" th:text="${gameId}"></p>
+    <input type="text" id="textInput"/>
+    <button type="submit" id="sendButton">Send</button>
+
+    <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+    <script src="/static/js/gameClient.js"></script>
 </main>
 </body>
 </html>
