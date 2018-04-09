@@ -57,19 +57,6 @@ public class GameRoomControllerTest {
     }
 
     @Test
-    public void joinGame_userGetsJoined() throws Exception {
-        //given
-        String gameId = UUID.randomUUID().toString();
-
-        //when
-        mockMvc.perform(get("/room/" + gameId)
-                .principal(principal));
-
-        //then
-        verify(gameRoomService, times(1)).join(anyString(), any());
-    }
-
-    @Test
     public void joinGame_properViewResolved() throws Exception {
         //given
         String gameId = UUID.randomUUID().toString();

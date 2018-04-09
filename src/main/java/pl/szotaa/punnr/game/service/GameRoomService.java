@@ -22,10 +22,6 @@ public class GameRoomService {
         return gameId;
     }
 
-    public void join(String gameId, String playerName){
-        log.info("player: " + playerName + " joined to: " + gameId);
-    }
-
     public GameRoom getById(String gameId){
         return gameRooms.get(gameId);
     }
