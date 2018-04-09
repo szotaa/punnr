@@ -9,7 +9,7 @@ window.onload = function (ev) {
         var socket = new SockJS('http://localhost:8080/game');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
-            stompClient.subscribe('/topic/' + gameId, function (message) {
+            stompClient.subscribe('/user/queue/' + gameId, function (message) {
                 console.log('recieved from socket: ' + message);
             });
         });
@@ -17,7 +17,7 @@ window.onload = function (ev) {
 
     sendButton.addEventListener('click', function () {
         var content = document.getElementById('textInput').value;
-        console.log('sent to socket: ' + textInput);
+        console.log('sent to socket: ' + content);
         stompClient.send("/game/" + gameId + "/chat", {}, JSON.stringify({'author': 'szotaa', 'content': content}));
     })
 };
