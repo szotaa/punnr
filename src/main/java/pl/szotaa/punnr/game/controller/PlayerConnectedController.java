@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import pl.szotaa.punnr.game.service.ChatService;
+import pl.szotaa.punnr.game.service.DrawingService;
 
 import java.security.Principal;
 
@@ -17,10 +18,12 @@ import java.security.Principal;
 public class PlayerConnectedController {
 
     private final ChatService chatService;
+    private final DrawingService drawingService;
 
     @SubscribeMapping("/{gameId}")
     public void onPlayerConnected(@DestinationVariable String gameId, Principal principal){
-        log.info("on subscribe called");
-        chatService.sendAllMessages(gameId, principal.getName());
+        String username = principal.getName();
+        chatService.sendAllMessages(gameId, username);
+        drawingService.sendAllLines(gameId, username);
     }
 }
