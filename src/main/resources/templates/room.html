@@ -8,10 +8,21 @@
 </head>
 <body>
 <main layout:fragment="content">
-    <p id="gameId" style="display: none;" th:text="${gameId}"></p>
-    <input type="text" id="textInput"/>
-    <button type="submit" id="sendButton">Send</button>
+    <div id="drawing">
+        <canvas width="500" height="500" style="border: 1px solid black" id="canvas">
 
+        </canvas>
+    </div>
+    <div id="chat" style="border: 1px solid black">
+        <p>Chat:</p>
+        <div id="messages" style="height: 200px; overflow: scroll;">
+
+        </div>
+        <input type="text" id="textInput"/>
+        <button type="submit" id="sendButton">Send</button>
+    </div>
+
+    <p id="gameId" style="display: none;" th:text="${gameId}"></p>
     <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
     <script src="/static/js/gameClient.js"></script>
