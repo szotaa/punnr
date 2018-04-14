@@ -8,9 +8,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonRootName("chatMessage")
-public class ChatMessage {
+@JsonRootName("event")
+public class Event {
 
+    private EventType eventType;
     private String author;
-    private String content;
+    private String message;
+
+    public enum EventType{
+        ROUND_WON, ROUND_STARTED, PLAYER_JOINED, PLAYER_LEFT
+    }
 }

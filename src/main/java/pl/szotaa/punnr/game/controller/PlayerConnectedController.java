@@ -1,7 +1,6 @@
 package pl.szotaa.punnr.game.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -11,7 +10,6 @@ import pl.szotaa.punnr.game.service.DrawingService;
 
 import java.security.Principal;
 
-@Slf4j
 @Controller
 @MessageMapping("/user/queue")
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class PlayerConnectedController {
     @SubscribeMapping("/{gameId}")
     public void onPlayerConnected(@DestinationVariable String gameId, Principal principal){
         String username = principal.getName();
-        chatService.sendAllMessages(gameId, username);
+        chatService.sendAllChatMessages(gameId, username);
         drawingService.sendAllLines(gameId, username);
     }
 }

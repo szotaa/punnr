@@ -1,33 +1,24 @@
 package pl.szotaa.punnr.game.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import pl.szotaa.punnr.game.holder.GameRoomHolder;
 import pl.szotaa.punnr.game.message.Line;
+import pl.szotaa.punnr.game.messenger.Messenger;
 
 @Service
 @RequiredArgsConstructor
 public class DrawingService {
 
     private final GameRoomHolder gameRoomHolder;
-    private final SimpMessagingTemplate messagingTemplate;
+    private final Messenger messenger;
 
-    public void processLine(String gameId, Line line){
-        gameRoomHolder.getById(gameId).addLine(line);
-        messagingTemplate.convertAndSend("/user/queue/" + gameId, line);
+    public void receiveLine(String gameId, Line line){
+        gameRoomHolder.getById(gameId).getDrawing().add(line);
+        messenger.sendToAll(gameId, line);
     }
 
     public void sendAllLines(String gameId, String username){
-        gameRoomHolder.getById(gameId)
-                .getDrawing()
-                .parallelStream()
-                .forEach(line -> {
-                    try{
-                        messagingTemplate.convertAndSendToUser(username, "/queue/" + gameId, line);
-                    } catch (Exception e){
-                        throw new RuntimeException("DrawingService.sendAllMessages(String, String) sth went wrong");
-                    }
-                });
+        messenger.sendAllToUser(gameId, username, gameRoomHolder.getById(gameId).getDrawing());
     }
 }

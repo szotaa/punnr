@@ -17,6 +17,6 @@ public class ChatController {
 
     @MessageMapping("/{gameId}/chat")
     public void processChatMessage(@DestinationVariable String gameId, @Payload ChatMessage message){
-        chatService.processChatMessage(gameId, message);
+        chatService.receiveChatMessage(gameId, message);
     }
 }

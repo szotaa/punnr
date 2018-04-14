@@ -25,6 +25,7 @@ public class GameRoomController {
 
     @GetMapping("/{gameId}")
     public ModelAndView joinGame(@PathVariable String gameId, Principal principal){
+        gameRoomService.join(gameId, principal.getName());
         return new ModelAndView("room", "gameId", gameId);
     }
 }

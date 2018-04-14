@@ -1,30 +1,18 @@
 package pl.szotaa.punnr.game.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import pl.szotaa.punnr.game.message.ChatMessage;
 import pl.szotaa.punnr.game.message.Line;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-@Getter
-@EqualsAndHashCode
+@Data
 public class GameRoom {
 
-    private final Queue<ChatMessage> chat = new ConcurrentLinkedQueue<>();
+    private Queue<String> players = new ConcurrentLinkedQueue<>();
+    private Queue<ChatMessage> chat = new ConcurrentLinkedQueue<>();
     private Queue<Line> drawing = new ConcurrentLinkedQueue<>();
-    private String currentDrawingTitle = "elo";
-
-    public void addChatMessage(ChatMessage message){
-        chat.add(message);
-    }
-
-    public void clearDrawing(){
-        drawing = new ConcurrentLinkedQueue<>();
-    }
-
-    public void addLine(Line line){
-        drawing.add(line);
-    }
+    private String currentDrawingTitle;
+    private String currentDrawer;
 }
