@@ -13,10 +13,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class GameRoom {
 
     private final Queue<ChatMessage> chat = new ConcurrentLinkedQueue<>();
-    private final Queue<Line> drawing = new ConcurrentLinkedQueue<>();
+    private Queue<Line> drawing = new ConcurrentLinkedQueue<>();
+    private String currentDrawingTitle = "elo";
 
     public void addChatMessage(ChatMessage message){
         chat.add(message);
+    }
+
+    public void clearDrawing(){
+        drawing = new ConcurrentLinkedQueue<>();
     }
 
     public void addLine(Line line){

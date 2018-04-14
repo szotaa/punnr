@@ -20,7 +20,12 @@ window.onload = function (ev) {
                     processLine(body['line']);
                 }
                 else if(body.hasOwnProperty('chatMessage')){
-                    processChatMessage(body['chatMessage']);
+                    if(body.chatMessage.messageType === 'CHAT'){
+                        processChatMessage(body.chatMessage);
+                    }
+                    else if(body.chatMessage.messageType === 'SERVER_WON'){
+                        processWinning(body.chatMessage);
+                    }
                 }
             });
         });
@@ -67,6 +72,15 @@ window.onload = function (ev) {
         var content = document.createTextNode(message.author + ": " + message.content);
         paragraph.appendChild(content);
         messages.appendChild(paragraph);
+    }
+
+    function processWinning(message){
+        var messages = document.getElementById('messages');
+        var paragraph = document.createElement('P');
+        var content = document.createTextNode(message.author + " WON!!");
+        paragraph.appendChild(content);
+        messages.appendChild(paragraph);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     function processLine(line) {
