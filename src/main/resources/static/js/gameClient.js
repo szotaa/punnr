@@ -20,7 +20,8 @@ window.onload = function (ev) {
                     processLine(body['line']);
                 }
                 else if(body.hasOwnProperty('chatMessage')){
-                    processChatMessage(body['chatMessage']);
+                    var chatMessage = body['chatMessage'];
+                    addToChatMessage(chatMessage.author + ": " + chatMessage.content);
                 }
                 else if(body.hasOwnProperty('event')){
                     processEvent(body['event']);
@@ -64,20 +65,39 @@ window.onload = function (ev) {
         ctx.closePath();
     }
 
-    function processChatMessage(message) {
+    function processEvent(event) {
+        if(event['eventType'] === 'ROUND_WON'){
+            addToChatMessage(event['author'] + " won this round!!! Correct answer was: " + event['message']);
+            clearDrawing();
+            rewardPlayers(event['author']);
+        }
+        else if(event['eventType'] === 'ROUND_STARTED'){
+            addToChatMessage('new round started')
+        }
+        else if(event['eventType'] === 'PLAYER_JOINED'){
+            addToChatMessage(event['author'] + ' joined the game')
+        }
+    }
+
+    function addToChatMessage(message) {
         var messages = document.getElementById('messages');
         var paragraph = document.createElement('P');
-        var content = document.createTextNode(message.author + ": " + message.content);
+        var content = document.createTextNode(message);
         paragraph.appendChild(content);
         messages.appendChild(paragraph);
     }
 
-    function processEvent(event) {
-        console.log('recieved event: ' + event);
-    }
-
     function processLine(line) {
         draw(line.fromX, line.fromY, line.toX, line.toY);
+    }
+
+    function clearDrawing(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function rewardPlayers(username) {
+        //var scores = document.getElementById('scores');
+        console.log(username + ' rewarded with 10 points');
     }
 
     sendButton.addEventListener('click', function () {

@@ -22,6 +22,12 @@
         <button type="submit" id="sendButton">Send</button>
     </div>
 
+    <div id="scoreboard" style="border: 1px solid black">
+        <table id="scores">
+
+        </table>
+    </div>
+
     <p id="gameId" style="display: none;" th:text="${gameId}"></p>
     <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>

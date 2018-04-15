@@ -22,13 +22,17 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 public class GameService {
 
+    private static final long WIN_REWARD = 10;
+
     private final GameRoomHolder gameRoomHolder;
     private final Messenger messenger;
 
     public void processPotentialAnswer(String gameId, ChatMessage answer){
         if(isAnswerCorrect(gameId, answer.getContent())){
-            messenger.sendToAll(gameId, new Event(Event.EventType.ROUND_WON, answer.getAuthor(), null));
-            //add points
+            GameRoom gameRoom = gameRoomHolder.getById(gameId);
+            messenger.sendToAll(gameId, new Event(Event.EventType.ROUND_WON, answer.getAuthor(), answer.getContent()));
+            gameRoom.getScoreboard().merge(answer.getAuthor(), WIN_REWARD, Long::sum);
+            //gameRoom.getScoreboard().merge(gameRoom.getCurrentDrawer(), WIN_REWARD, Long::sum);
             startNewRound(gameId);
         }
     }

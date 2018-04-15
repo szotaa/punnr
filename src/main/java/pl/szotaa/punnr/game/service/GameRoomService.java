@@ -13,6 +13,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GameRoomService {
 
+    private static final long INITIAL_SCORE = 0L;
+
     private final GameRoomHolder gameRoomHolder;
     private final GameService gameService;
     private final Messenger messenger;
@@ -25,7 +27,9 @@ public class GameRoomService {
     }
 
     public void join(String gameId, String username){
-        gameRoomHolder.getById(gameId).getPlayers().add(username);
+        GameRoom gameRoom = gameRoomHolder.getById(gameId);
+        gameRoom.getPlayers().add(username);
+        gameRoom.getScoreboard().put(username, INITIAL_SCORE);
         messenger.sendToAll(gameId, new Event(Event.EventType.PLAYER_JOINED, username, null));
     }
 

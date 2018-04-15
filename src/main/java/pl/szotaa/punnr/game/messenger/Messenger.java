@@ -26,4 +26,8 @@ public class Messenger {
                     }
                 });
     }
+
+    public void sendObjectToUser(String gameId, String username, Object object){
+        messagingTemplate.convertAndSendToUser(username, "/queue/" + gameId, object);
+    }
 }
