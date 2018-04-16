@@ -31,7 +31,9 @@
     <p id="gameId" style="display: none;" th:text="${gameId}"></p>
     <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
-    <script src="/static/js/gameClient.js"></script>
+    <script type="module" src="/static/js/GameClient.js"></script>
+    <script type="module" src="/static/js/ChatHandler.js"></script>
+    <script type="module" src="/static/js/CanvasHandler.js"></script>
 </main>
 </body>
 </html>
