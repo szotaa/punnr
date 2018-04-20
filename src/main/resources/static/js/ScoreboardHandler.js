@@ -21,7 +21,7 @@ export default class ScoreboardHandler {
     rewardWinners(guesserNickname, drawerNickname){
         let currentGuesserScore = parseInt(this.scoreboard.get(guesserNickname));
         let currentDrawerScore = parseInt(this.scoreboard.get(drawerNickname));
-        console.log("score: " + currentGuesserScore + " " + typeof currentGuesserScore);
+        console.log("score of: " + drawerNickname + ": " + currentDrawerScore);
         this.scoreboard.set(guesserNickname, (currentGuesserScore + 10));
         this.scoreboard.set(drawerNickname, (currentDrawerScore + 10));
         this.updateHtmlScoreboard();

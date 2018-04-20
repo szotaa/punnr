@@ -6,6 +6,7 @@ window.onload = function gameClient() {
 
     let stompClient = null;
     let gameId = document.getElementById('gameId').innerHTML;
+    let currentDrawer = null;
 
     let canvasHandler = null;
     let chatHandler = null;
@@ -39,7 +40,6 @@ window.onload = function gameClient() {
             processEvent(message['event']);
         }
         else if(message.hasOwnProperty(['ConcurrentHashMap'])){
-            console.log('ConcurrentHashMap: ' + message['ConcurrentHashMap'].toString());
             scoreboardHandler.onJoin(message['ConcurrentHashMap']);
         }
     }
@@ -48,10 +48,20 @@ window.onload = function gameClient() {
         if(event['eventType'] === 'ROUND_WON'){
             chatHandler.appendEventToChat(event.author + ' won this round! correct answer was: ' + event.message);
             canvasHandler.clearDrawing();
-            scoreboardHandler.rewardWinners(event.author, 'curr drawer'); //TODO: FIX
+            scoreboardHandler.rewardWinners(event.author, currentDrawer);
+            canvasHandler.drawingTitle = null;
+        }
+        else if(event['eventType'] === 'ROUND_STARTED'){
+            currentDrawer = event.author;
+            console.log('curent drawer: ' + currentDrawer + " event.authir: " + event.author);
+            chatHandler.appendEventToChat(event.author + ' is currently drawing');
         }
         else if(event['eventType'] === 'PLAYER_JOINED'){
             scoreboardHandler.addEntry(event.author, 0);
+        }
+        else if(event['eventType'] === 'YOU_ARE_DRAWING'){
+            canvasHandler.setDrawingTitle(event.message);
+            chatHandler.appendEventToChat('you are drawing! draw: ' + event.message);
         }
     }
 };

@@ -16,6 +16,6 @@ public class Event {
     private String message;
 
     public enum EventType{
-        ROUND_WON, ROUND_STARTED, PLAYER_JOINED, PLAYER_LEFT
+        ROUND_WON, ROUND_STARTED, PLAYER_JOINED, PLAYER_LEFT, YOU_ARE_DRAWING, GAME_ENDED
     }
 }

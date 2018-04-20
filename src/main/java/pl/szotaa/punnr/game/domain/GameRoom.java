@@ -4,6 +4,7 @@ import lombok.Data;
 import pl.szotaa.punnr.game.message.ChatMessage;
 import pl.szotaa.punnr.game.message.Line;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +14,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class GameRoom {
 
     private Queue<String> players = new ConcurrentLinkedQueue<>();
+
+    private Iterator<String> iterator = players.iterator();
 
     private Queue<ChatMessage> chat = new ConcurrentLinkedQueue<>();
 

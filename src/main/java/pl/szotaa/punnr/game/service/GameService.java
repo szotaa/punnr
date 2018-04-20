@@ -13,6 +13,7 @@ import pl.szotaa.punnr.game.messenger.Messenger;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadLocalRandom;
@@ -32,7 +33,7 @@ public class GameService {
             GameRoom gameRoom = gameRoomHolder.getById(gameId);
             messenger.sendToAll(gameId, new Event(Event.EventType.ROUND_WON, answer.getAuthor(), answer.getContent()));
             gameRoom.getScoreboard().merge(answer.getAuthor(), WIN_REWARD, Long::sum);
-            //gameRoom.getScoreboard().merge(gameRoom.getCurrentDrawer(), WIN_REWARD, Long::sum);
+            gameRoom.getScoreboard().merge(gameRoom.getCurrentDrawer(), WIN_REWARD, Long::sum);
             startNewRound(gameId);
         }
     }
@@ -41,8 +42,9 @@ public class GameService {
         GameRoom gameRoom = gameRoomHolder.getById(gameId);
         gameRoom.setDrawing(new ConcurrentLinkedQueue<>());
         gameRoom.setCurrentDrawingTitle(getAnotherAnswer(gameRoom.getCurrentDrawingTitle()));
-        log.info(gameRoom.getCurrentDrawingTitle());
-        messenger.sendToAll(gameId, new Event(Event.EventType.ROUND_STARTED, null, null));
+        gameRoom.setCurrentDrawer(getNextDrawer(gameId));
+        messenger.sendToAll(gameId, new Event(Event.EventType.ROUND_STARTED, gameRoom.getCurrentDrawer(), null));
+        messenger.sendObjectToUser(gameId, gameRoom.getCurrentDrawer(), new Event(Event.EventType.YOU_ARE_DRAWING, null, gameRoom.getCurrentDrawingTitle()));
     }
 
     private boolean isAnswerCorrect(String gameId, String answer){
@@ -66,5 +68,20 @@ public class GameService {
 
         }
         return result;
+    }
+
+    private String getNextDrawer(String gameId){
+        GameRoom gameRoom = gameRoomHolder.getById(gameId);
+        Iterator<String> iterator = gameRoom.getIterator();
+        if(gameRoom.getPlayers().size() == 1){
+            return gameRoom.getPlayers().peek();
+        }
+        else if(iterator.hasNext()){
+            return iterator.next();
+        }
+        else {
+            gameRoom.setIterator(gameRoom.getPlayers().iterator());
+            return gameRoom.getIterator().next();
+        }
     }
 }

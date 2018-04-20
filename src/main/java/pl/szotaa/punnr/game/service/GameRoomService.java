@@ -22,7 +22,6 @@ public class GameRoomService {
     public String create(){
         String gameId = generateGameId();
         gameRoomHolder.getGameRooms().put(gameId, new GameRoom());
-        gameService.startNewRound(gameId);
         return gameId;
     }
 
@@ -32,6 +31,10 @@ public class GameRoomService {
             gameRoom.getPlayers().add(username);
             gameRoom.getScoreboard().put(username, INITIAL_SCORE);
             messenger.sendToAll(gameId, new Event(Event.EventType.PLAYER_JOINED, username, null));
+        }
+
+        if(gameRoom.getPlayers().size() == 1){
+            gameService.startNewRound(gameId);
         }
     }
 

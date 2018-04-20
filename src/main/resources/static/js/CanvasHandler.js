@@ -1,6 +1,7 @@
 export default class CanvasHandler {
 
     constructor(sendCallback){
+        this.drawingTitle = null;
         this.canvas = document.getElementById('canvas');
         this.ctx = this.canvas.getContext('2d');
         this.isPainting = false;
@@ -32,7 +33,12 @@ export default class CanvasHandler {
 
     mouseup(e){
         this.isPainting = false;
-    }
+    };
+
+    setDrawingTitle(value){
+        console.log('setting drawing title to: ' + value);
+        this.drawingTitle = value;
+    };
 
     draw(line){
         this.ctx.beginPath();
@@ -42,10 +48,10 @@ export default class CanvasHandler {
         this.ctx.lineWidth = 5;
         this.ctx.stroke();
         this.ctx.closePath();
-    }
+    };
 
 
     clearDrawing(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
+    };
 };
