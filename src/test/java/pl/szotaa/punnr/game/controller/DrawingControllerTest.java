@@ -14,15 +14,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pl.szotaa.IntegrationTest;
 import pl.szotaa.punnr.game.domain.GameRoom;
 import pl.szotaa.punnr.game.holder.GameRoomHolder;
-import pl.szotaa.punnr.game.message.ChatMessage;
+import pl.szotaa.punnr.game.message.Line;
 import pl.szotaa.util.MessageHeadersBuilder;
 
 import static org.junit.Assert.assertEquals;
 
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Category(IntegrationTest.class)
-public class ChatControllerTest {
+public class DrawingControllerTest {
 
     @Autowired
     private GameRoomHolder gameRoomHolder;
@@ -31,7 +32,7 @@ public class ChatControllerTest {
     private AbstractSubscribableChannel clientInboundChannel;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         GameRoom gameRoom = new GameRoom();
         gameRoom.setCurrentDrawer("example drawer");
         gameRoom.setCurrentDrawingTitle("example drawing title");
@@ -39,36 +40,19 @@ public class ChatControllerTest {
     }
 
     @Test(timeout = 10000L)
-    public void sendChatMessage_chatMessageGetsStored() throws Exception {
+    public void sendLine_lineGetsStored() throws Exception {
         //given
-        ChatMessage chatMessage = new ChatMessage(null, "content");
-        byte[] payload = new ObjectMapper().writeValueAsBytes(chatMessage);
+        Line line = new Line(0, 0, 1, 1);
+        byte[] payload = new ObjectMapper().writeValueAsBytes(line);
         Message<byte[]> message = MessageBuilder.createMessage(payload, MessageHeadersBuilder
-                .sendTo("/game/gameId/chat"));
+                .sendTo("/game/gameId/draw"));
 
         //when
         this.clientInboundChannel.send(message);
 
         //then
         Thread.currentThread().sleep(1000L);
-        assertEquals(1, gameRoomHolder.getById("gameId").getChat().size());
-        assertEquals(chatMessage.getContent(), gameRoomHolder.getById("gameId").getChat().peek().getContent());
-    }
-
-    @Test(timeout = 10000L)
-    public void sendChatMessage_authorGetsAppended() throws Exception {
-        //given
-        ChatMessage chatMessage = new ChatMessage(null, "content");
-        byte[] payload = new ObjectMapper().writeValueAsBytes(chatMessage);
-        Message<byte[]> message = MessageBuilder.createMessage(payload, MessageHeadersBuilder
-                .sendTo("/game/gameId/chat"));
-
-        //when
-        this.clientInboundChannel.send(message);
-
-        //then
-        Thread.currentThread().sleep(1000L);
-        assertEquals(1, gameRoomHolder.getById("gameId").getChat().size());
-        assertEquals(MessageHeadersBuilder.getPrincipalName(), gameRoomHolder.getById("gameId").getChat().peek().getAuthor());
+        assertEquals(1, gameRoomHolder.getById("gameId").getDrawing().size());
+        assertEquals(line, gameRoomHolder.getById("gameId").getDrawing().peek());
     }
 }
