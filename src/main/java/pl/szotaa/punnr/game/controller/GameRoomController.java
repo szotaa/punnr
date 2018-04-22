@@ -17,6 +17,11 @@ public class GameRoomController {
 
     private final GameRoomService gameRoomService;
 
+    @GetMapping
+    public ModelAndView getGameRoomList(){
+        return new ModelAndView("rooms", "rooms", gameRoomService.getAllGames());
+    }
+
     @GetMapping("/new")
     public ModelAndView startNewGame(){
         String gameId = gameRoomService.create();

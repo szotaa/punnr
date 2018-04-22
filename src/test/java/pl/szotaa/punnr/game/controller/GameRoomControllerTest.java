@@ -67,4 +67,12 @@ public class GameRoomControllerTest {
                 .andExpect(view().name("room"))
                 .andExpect(model().attributeExists("gameId"));
     }
+
+    @Test
+    public void getGameRoomList_properViewResolved() throws Exception {
+        mockMvc.perform(get("/room").principal(principal))
+                .andExpect(status().isOk())
+                .andExpect(view().name("rooms"))
+                .andExpect(model().attributeExists("rooms"));
+    }
 }

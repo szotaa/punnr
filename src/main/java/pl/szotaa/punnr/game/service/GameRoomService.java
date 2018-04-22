@@ -7,6 +7,7 @@ import pl.szotaa.punnr.game.holder.GameRoomHolder;
 import pl.szotaa.punnr.game.message.Event;
 import pl.szotaa.punnr.game.messenger.Messenger;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -36,6 +37,10 @@ public class GameRoomService {
         if(gameRoom.getPlayers().size() == 1){
             gameService.startNewRound(gameId);
         }
+    }
+
+    public Map<String, GameRoom> getAllGames(){
+        return gameRoomHolder.getGameRooms();
     }
 
     private String generateGameId(){
