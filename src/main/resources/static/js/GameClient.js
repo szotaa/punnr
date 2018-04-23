@@ -63,5 +63,19 @@ window.onload = function gameClient() {
             canvasHandler.setDrawingTitle(event.message);
             chatHandler.appendEventToChat('you are drawing! draw: ' + event.message);
         }
+        else if(event['eventType'] === 'GAME_ENDED'){
+            chatHandler.appendEventToChat('game ended! winner: ' + event.author);
+            disconnect();
+        }
+    }
+
+    function disconnect(){
+        chatHandler = new ChatHandler(function (x) {
+            console.log('game ended go away');
+        });
+        canvasHandler = new CanvasHandler(function (x) {
+            console.log('game ended go away');
+        });
+        stompClient.disconnect();
     }
 };

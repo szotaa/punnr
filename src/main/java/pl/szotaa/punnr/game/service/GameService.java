@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -24,6 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameService {
 
     private static final long WIN_REWARD = 10;
+    private static final long SCORE_LIMIT = 100;
 
     private final GameRoomHolder gameRoomHolder;
     private final Messenger messenger;
@@ -34,7 +36,12 @@ public class GameService {
             messenger.sendToAll(gameId, new Event(Event.EventType.ROUND_WON, answer.getAuthor(), answer.getContent()));
             gameRoom.getScoreboard().merge(answer.getAuthor(), WIN_REWARD, Long::sum);
             gameRoom.getScoreboard().merge(gameRoom.getCurrentDrawer(), WIN_REWARD, Long::sum);
-            startNewRound(gameId);
+            if(isGameFinished(gameId)){
+                finishGame(gameId);
+            }
+            else {
+                startNewRound(gameId);
+            }
         }
     }
 
@@ -49,6 +56,29 @@ public class GameService {
 
     private boolean isAnswerCorrect(String gameId, String answer){
         return gameRoomHolder.getById(gameId).getCurrentDrawingTitle().compareToIgnoreCase(answer) == 0;
+    }
+
+    private boolean isGameFinished(String gameId){
+        for(Long score : gameRoomHolder.getById(gameId).getScoreboard().values()){
+            if(score > SCORE_LIMIT){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void finishGame(String gameId){
+        String winnerUsername = null;
+        long temp = 0;
+        Map<String, Long> scoreboard = gameRoomHolder.getById(gameId).getScoreboard();
+        for(String username : scoreboard.keySet()){
+            if(scoreboard.get(username) > temp){
+                temp = scoreboard.get(username);
+                winnerUsername = username;
+            }
+        }
+        messenger.sendToAll(gameId, new Event(Event.EventType.GAME_ENDED, winnerUsername, null));
+        gameRoomHolder.getGameRooms().remove(gameId);
     }
 
     private String getAnotherAnswer(String currentAnswer){ //TODO: clean this up
