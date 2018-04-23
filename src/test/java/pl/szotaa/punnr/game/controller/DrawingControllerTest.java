@@ -34,7 +34,7 @@ public class DrawingControllerTest {
     @Before
     public void setUp() {
         GameRoom gameRoom = new GameRoom();
-        gameRoom.setCurrentDrawer("example drawer");
+        gameRoom.setCurrentDrawer("exampleName");
         gameRoom.setCurrentDrawingTitle("example drawing title");
         this.gameRoomHolder.getGameRooms().put("gameId", gameRoom);
     }
