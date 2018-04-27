@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.szotaa.punnr.user.domain.Role;
 import pl.szotaa.punnr.user.domain.User;
+import pl.szotaa.punnr.user.exception.UserAlreadyExistsException;
 import pl.szotaa.punnr.user.repository.UserRepository;
 
 @Service
@@ -16,7 +17,7 @@ public class UserService {
 
     public void register(User user){
         if(userRepository.existsByEmail(user.getEmail())){
-            throw new RuntimeException("user already exists");
+            throw new UserAlreadyExistsException();
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
