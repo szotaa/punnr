@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.szotaa.IntegrationTest;
+import pl.szotaa.punnr.user.domain.Role;
 import pl.szotaa.punnr.user.domain.User;
 
 import java.util.Optional;
@@ -29,6 +30,8 @@ public class UserRepositoryTest {
         //given
         User user = User.builder()
                 .email("example@email.com")
+                .password("examplePassword")
+                .isActive(Boolean.TRUE)
                 .build();
 
         entityManager.persist(user);
@@ -46,6 +49,8 @@ public class UserRepositoryTest {
         //given
         User user = User.builder()
                 .email("example@email.com")
+                .password("examplePassword")
+                .isActive(Boolean.TRUE)
                 .build();
 
         entityManager.persist(user);

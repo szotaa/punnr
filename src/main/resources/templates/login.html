@@ -8,13 +8,37 @@
 </head>
 <body>
 <main layout:fragment="content">
-    <form method="post" th:action="@{/user/login}">
-        <label for="email">Email: </label>
-        <input id="email" type="text" name="email"/>
-        <label for="password">Password: </label>
-        <input id="password" type="text" name="password"/>
-        <button type="submit">login</button>
-    </form>
+    <div class="container">
+        <h1 class="text-center">Login</h1>
+        <div class="alert alert-success" role="alert" th:if="${param.registered != null}">
+            Account successfully registered! You can log in now!
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.logout != null}">
+            Logged out successfully!
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.error != null}">
+            Wrong username/password!
+        </div>
+        <form method="post" th:action="@{/user/login}">
+            <div class="form-group input-group">
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                    </div>
+                    <input class="form-control" name="email" placeholder="Email" type="email" required>
+                </div>
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input class="form-control" name="password" placeholder="Password" type="password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Login  </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </main>
 </body>
 </html>
