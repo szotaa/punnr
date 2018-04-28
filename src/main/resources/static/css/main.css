@@ -1,0 +1,38 @@
+.grid-container{
+    display: inline-grid;
+    grid-template-columns: 1024px 256px;
+    grid-template-rows: 256px 256px 216px 40px;
+    grid-gap: 0;
+}
+
+.grid-drawing{
+    border: 1px solid black;
+    grid-row-start: 1;
+    grid-row-end: 5;
+}
+
+.grid-toolbox{
+    border: 1px solid black;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    overflow: hidden;
+}
+
+.grid-scoreboard{
+    border: 1px solid black;
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+
+.grid-chat{
+    border: 1px solid black;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    overflow-y: scroll;
+}
+
+.grid-messageInput{
+    border: 1px solid black;
+    grid-row-start: 4;
+    grid-row-end: 5;
+}
